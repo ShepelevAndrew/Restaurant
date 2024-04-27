@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services
         .AddPresentation()
-        .AddInfrastructure()
+        .AddInfrastructure(builder.Configuration)
         .AddApplication();
 }
 
@@ -20,6 +20,15 @@ var app = builder.Build();
 
     app.UseHttpsRedirection();
     app.UseAuthentication();
+    app.UseAuthorization();
     app.MapControllers();
+}
+
+try
+{
     app.Run();
+}
+catch(Exception ex)
+{
+    Console.WriteLine(ex.Message);
 }
