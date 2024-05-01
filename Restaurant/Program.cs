@@ -1,9 +1,13 @@
 using Restaurant;
 using Restaurant.Application;
 using Restaurant.Infrastructure;
+using Restaurant.Infrastructure.Migrations;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 {
+    builder.Host.UseSerilog();
+
     builder.Services
         .AddPresentation()
         .AddInfrastructure(builder.Configuration)
@@ -16,9 +20,11 @@ var app = builder.Build();
     {
         app.UseSwagger();
         app.UseSwaggerUI();
+        app.ApplyMigrations();
     }
 
     app.UseHttpsRedirection();
+    app.UseSerilogRequestLogging();
     app.UseAuthentication();
     app.UseAuthorization();
     app.MapControllers();

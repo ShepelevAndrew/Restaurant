@@ -1,4 +1,6 @@
-﻿namespace Restaurant.Controllers.Auth.Common;
+﻿using Restaurant.Controllers.User.Response;
+
+namespace Restaurant.Controllers.Auth.Common;
 
 public record AuthenticationResponse(
     UserResponse User,
