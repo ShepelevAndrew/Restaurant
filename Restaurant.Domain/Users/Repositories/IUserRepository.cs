@@ -2,7 +2,13 @@
 
 public interface IUserRepository
 {
-    Task Create(User user);
+    Task<bool> Create(User user);
+
+    Task<bool> Update(User user);
+
+    Task<IEnumerable<User>> Get();
+
+    Task<bool> Delete(string email);
 
     Task<User?> GetByEmailAsync(string email);
 

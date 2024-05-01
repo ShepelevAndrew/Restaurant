@@ -15,6 +15,7 @@ public class User
         Email = email;
         Phone = phone;
         Password = Sha256Encoding(password, Salt);
+        IsEmailConfirmed = false;
     }
 
     // For EF Core
@@ -38,6 +39,22 @@ public class User
     public string Phone { get; private set; }
 
     public string Password { get; private set; }
+
+    public bool IsEmailConfirmed { get; private set; }
+
+    public User Update(string? firstname, string? lastname, string? phone)
+    {
+        Firstname = firstname ?? Firstname;
+        Lastname = lastname ?? Lastname;
+        Phone = phone ?? Phone;
+
+        return this;
+    }
+
+    public void ConfirmEmail()
+    {
+        IsEmailConfirmed = true;
+    }
 
     public bool ComparePassword(string password)
     {
