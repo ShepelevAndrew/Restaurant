@@ -1,14 +1,10 @@
-﻿using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using Restaurant.Application.Abstractions.Auth;
-using Restaurant.Domain.Users.Repositories;
-using Restaurant.Infrastructure.Authentication;
+using Restaurant.Application.Abstractions.VerificationCode;
+using Restaurant.Infrastructure.Auth;
+using Restaurant.Infrastructure.Options;
 using Restaurant.Infrastructure.Persistent;
-using Restaurant.Infrastructure.Persistent.Repositories;
+using Restaurant.Infrastructure.VerificationCodeServices;
 
 namespace Restaurant.Infrastructure;
 
@@ -18,9 +14,12 @@ public static class InfrastructureDependencyInjection
         this IServiceCollection services,
         IConfigurationManager configuration)
     {
-        services.AddDatabase(configuration);
-        services.AddAuth(configuration);
-        services.AddScoped<IUserRepository, UserRepository>();
+        services
+            .AddDatabase(configuration)
+            .AddAuth(configuration)
+            .AddOptions(configuration)
+            .AddScoped<ICodeSender, EmailCodeSender>()
+            .AddScoped<ICodeGenerator, CodeGenerator>();
 
         return services;
     }

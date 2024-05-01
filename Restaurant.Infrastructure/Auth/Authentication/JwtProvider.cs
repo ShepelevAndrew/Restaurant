@@ -5,9 +5,10 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Restaurant.Application.Abstractions.Auth;
 using Restaurant.Domain.Users;
-using Restaurant.Infrastructure.Authentication.CustomJwtClaims;
+using Restaurant.Infrastructure.Auth.Authentication.CustomJwtClaims;
+using Restaurant.Infrastructure.Options;
 
-namespace Restaurant.Infrastructure.Authentication;
+namespace Restaurant.Infrastructure.Auth.Authentication;
 
 public class JwtProvider : IJwtProvider
 {
