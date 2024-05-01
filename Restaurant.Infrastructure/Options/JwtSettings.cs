@@ -1,4 +1,4 @@
-﻿namespace Restaurant.Infrastructure.Authentication;
+﻿namespace Restaurant.Infrastructure.Auth.Authentication;
 
 public class JwtSettings
 {

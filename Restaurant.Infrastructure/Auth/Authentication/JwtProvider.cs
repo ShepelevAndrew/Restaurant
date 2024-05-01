@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Restaurant.Application.Abstractions.Auth;
 using Restaurant.Domain.Users;
+using Restaurant.Infrastructure.Authentication.CustomJwtClaims;
 
 namespace Restaurant.Infrastructure.Authentication;
 
@@ -25,6 +26,7 @@ public class JwtProvider : IJwtProvider
             new(JwtRegisteredClaimNames.GivenName, user.Firstname),
             new(JwtRegisteredClaimNames.FamilyName, user.Lastname),
             new(JwtRegisteredClaimNames.Email, user.Email),
+            new(JwtClaims.EmailVerified, user.IsEmailConfirmed.ToString().ToLower()),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
 

@@ -14,6 +14,7 @@ public static class ApplicationDependencyInjection
         services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssembly(typeof(ApplicationDependencyInjection).Assembly));
 
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddScoped<IValidator<RegisterCommand>, RegisterCommandValidator>();
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());

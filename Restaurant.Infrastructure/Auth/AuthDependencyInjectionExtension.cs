@@ -4,14 +4,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Restaurant.Application.Abstractions.Auth;
+using Restaurant.Infrastructure.Auth.Authentication;
+using Restaurant.Infrastructure.Auth.Authentication.CustomJwtClaims;
+using Restaurant.Infrastructure.Auth.Authorization.CustomPolicy;
+using Restaurant.Infrastructure.Options;
 
-namespace Restaurant.Infrastructure.Authentication;
+namespace Restaurant.Infrastructure.Auth;
 
-public static class AuthenticationServiceExtenstion
+public static class AuthDependencyInjectionExtension
 {
-    public static void AddAuth(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
         services.AddSingleton<IJwtProvider, JwtProvider>();
 
         var jwtSettings = new JwtSettings();
@@ -29,5 +32,14 @@ public static class AuthenticationServiceExtenstion
                 IssuerSigningKey = new SymmetricSecurityKey(
                     Encoding.UTF8.GetBytes(jwtSettings.Secret))
             });
+
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy(
+                AuthPolicy.VerifiedAccount,
+                policy => policy.RequireClaim(JwtClaims.EmailVerified, JwtClaims.BoolValueTrue));
+        });
+
+        return services;
     }
 }
