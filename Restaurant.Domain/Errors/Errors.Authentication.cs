@@ -18,5 +18,9 @@ public static partial class Errors
         public static Error WrongPassword => Error.Conflict(
             code: ((int)HttpStatusCode.Conflict).ToString(),
             description: "Entered password is wrong.");
+
+        public static Error VerificationCodeInvalid => Error.Conflict(
+            code: ((int)HttpStatusCode.Conflict).ToString(),
+            description: "Verification code is invalid.");
     }
 }
