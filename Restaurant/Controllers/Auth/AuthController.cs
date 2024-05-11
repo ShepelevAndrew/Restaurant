@@ -1,5 +1,6 @@
 ﻿using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.Auth.Login;
 using Restaurant.Application.Auth.Register;
@@ -25,10 +26,21 @@ public class AuthController : ApiController
     /// <summary>
     /// Login into restaurant
     /// </summary>
+    /// <remarks>
+    /// Owner info:
+    ///
+    ///     POST /api/v1.0/auth/login
+    ///     {
+    ///        "email" : "owner@gmail.com",
+    ///        "password" : "12345Te",
+    ///     }
+    /// 
+    /// </remarks>
     /// <returns>User info and bearer token.</returns>
     /// <response code="200">Successful login. Returns user info and bearer token.</response>
     /// <response code="400">Incorrect validation request.</response>
     /// <response code="409">Problem with authentication information.</response>
+    [AllowAnonymous]
     [HttpPost("login")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(AuthenticationResponse), StatusCodes.Status200OK)]
@@ -53,6 +65,7 @@ public class AuthController : ApiController
     /// <response code="200">Successful register. Returns user info and bearer token.</response>
     /// <response code="400">Incorrect validation request.</response>
     /// <response code="409">Problem with authentication information.</response>
+    [AllowAnonymous]
     [HttpPost("register")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(AuthenticationResponse), StatusCodes.Status200OK)]
@@ -78,6 +91,7 @@ public class AuthController : ApiController
     /// <response code="400">Incorrect validation request.</response>
     /// <response code="404">User with that email address is not found.</response>
     /// <response code="409">Problem with authentication information.</response>
+    [AllowAnonymous]
     [HttpGet("confirm-email")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(AuthenticationResponse), StatusCodes.Status200OK)]

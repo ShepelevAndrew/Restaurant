@@ -8,9 +8,11 @@ public interface IUserRepository
 
     Task<IEnumerable<User>> Get();
 
-    Task<bool> Delete(string email);
+    Task<User?> GetById(Guid userId);
 
-    Task<User?> GetByEmailAsync(string email);
+    Task<User?> GetByEmail(string email);
+
+    Task<bool> Delete(string email);
 
     Task<bool> IsEmailExist(string email);
 }

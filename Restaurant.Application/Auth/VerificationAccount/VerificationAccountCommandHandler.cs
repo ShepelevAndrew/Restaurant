@@ -1,7 +1,7 @@
 ﻿using ErrorOr;
 using MediatR;
-using Restaurant.Application.Abstractions.Auth;
-using Restaurant.Application.Abstractions.Users;
+using Restaurant.Application.Common.Abstractions.Auth;
+using Restaurant.Application.Common.Abstractions.Users;
 using Restaurant.Application.Auth.Common;
 using Restaurant.Domain.Errors;
 
@@ -21,7 +21,7 @@ public class VerificationAccountCommandHandler
 
     public async Task<ErrorOr<AuthenticationResult>> Handle(VerificationAccountCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.GetByEmailAsync(request.Email);
+        var user = await _userManager.GetByEmail(request.Email);
         if (user is null)
         {
             return Errors.User.UserNotFound;

@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Restaurant.Application.Abstractions.Auth;
+using Restaurant.Application.Common.Abstractions.Auth;
 using Restaurant.Domain.Users;
 using Restaurant.Infrastructure.Auth.Authentication.CustomJwtClaims;
 using Restaurant.Infrastructure.Options;

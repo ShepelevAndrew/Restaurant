@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+  restaurant.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=80,
+      - ASPNETCORE_HTTPS_PORTS=8080,
+      - ASPNETCORE_URLS=https://+:8080;http://+:80"
+    ports:
+      - "80:80"
+      - "8080:8080"

@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Restaurant.Application.Abstractions.Users;
+using Restaurant.Application.Common.Abstractions.Users;
+using Restaurant.Domain.Orders.Repositories;
+using Restaurant.Domain.Products.Repositories;
 using Restaurant.Domain.Users.Repositories;
 using Restaurant.Infrastructure.Persistent.Repositories;
 
@@ -15,7 +17,13 @@ public static class DatabaseServiceExtenstion
             .AddSqlDb(configuration)
             .AddCache(configuration)
             .AddScoped<IUserRepository, UserRepository>()
-            .AddScoped<IUserManager, UserManager>();
+            .AddScoped<IUserManager, UserManager>()
+            .AddScoped<IRoleRepository, RoleRepository>()
+            .AddScoped<IPermissionRepository, PermissionRepository>()
+            .AddScoped<ICategoryRepository, CategoryRepository>()
+            .AddScoped<IProductRepository, ProductRepository>()
+            .AddScoped<IOrderRepository, OrderRepository>()
+            .AddScoped<IOrderDetailRepository, OrderDetailRepository>();
 
         return services;
     }

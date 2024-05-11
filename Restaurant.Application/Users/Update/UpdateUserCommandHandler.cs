@@ -18,7 +18,7 @@ public class UpdateUserCommandHandler
 
     public async Task<ErrorOr<User>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetByEmailAsync(request.Email);
+        var user = await _userRepository.GetByEmail(request.Email);
         if (user is null)
         {
             return Errors.User.UserNotFound;

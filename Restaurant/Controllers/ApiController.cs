@@ -8,7 +8,7 @@ namespace Restaurant.Controllers;
 [ApiController]
 public class ApiController : ControllerBase
 {
-    protected IActionResult Problem(IEnumerable<Error> errors)
+    protected IActionResult Problem(List<Error> errors)
     {
         if (!errors.Any())
         {

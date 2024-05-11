@@ -4,4 +4,4 @@ using Restaurant.Domain.Users;
 
 namespace Restaurant.Application.Users.Get;
 
-public record GetUsersQuery() : IRequest<ErrorOr<List<User>>>;
+public record GetUsersQuery : IRequest<ErrorOr<List<User>>>;

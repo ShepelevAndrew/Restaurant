@@ -1,0 +1,74 @@
+version: '3.9'
+
+services:
+  restaurant.api:
+    image: ${DOCKER_REGISTRY-}restaurant
+    container_name: restaurant.api
+    build:
+      context: .
+      dockerfile: Restaurant/Dockerfile
+    ports:
+      - "80:80"
+      - "8080:8080"
+    networks:
+      - restaurant
+    depends_on:
+      - restaurant.database
+      - restaurant.cache
+        
+  restaurant.database:
+    image: postgres:latest
+    container_name: restaurant.database
+    environment:
+      - POSTGRES_DB=Restaurant
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=97425777Teo
+    volumes:
+      - ./.containers/restaurant-db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - restaurant
+        
+  restaurant.cache:
+    image: redis:latest
+    container_name: restaurant.cache
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - restaurant
+      
+  restaurant.elasticsearch:
+    image: elasticsearch:8.13.0
+    container_name: restaurant.elasticsearch
+    environment:
+      - node.name=restaurant-es
+      - cluster.name=restaurant-docker-cluster
+      - cluster.initial_master_nodes=restaurant-es
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - ./.containers/elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - elastic
+        
+  restaurant.kibana:
+    image: kibana:8.13.0
+    container_name: restaurant.kibana
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_URL: http://restaurant-es:9200
+      ELASTICSEARCH_HOSTS: http://restaurant-es:9200
+    networks:
+      - elastic
+    depends_on:
+      - restaurant.elasticsearch
+
+networks:
+  restaurant:
+    driver: bridge
+  elastic:
+    driver: bridge

@@ -1,6 +1,6 @@
 ﻿using ErrorOr;
 using MediatR;
-using Restaurant.Application.Abstractions.Auth;
+using Restaurant.Application.Common.Abstractions.Auth;
 using Restaurant.Application.Auth.Common;
 using Restaurant.Domain.Errors;
 using Restaurant.Domain.Users.Repositories;
@@ -21,7 +21,7 @@ public sealed class LoginQueryHandler
 
     public async Task<ErrorOr<AuthenticationResult>> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetByEmailAsync(request.Email);
+        var user = await _userRepository.GetByEmail(request.Email);
         if (user is null)
         {
             return Errors.Authentication.EmailNotUsing;

@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Restaurant.Application.Abstractions.VerificationCode;
+using Restaurant.Application.Common.Abstractions.NotificationSenders;
 using Restaurant.Infrastructure.Auth;
 using Restaurant.Infrastructure.Options;
 using Restaurant.Infrastructure.Persistent;
-using Restaurant.Infrastructure.VerificationCodeServices;
+using Restaurant.Infrastructure.WebSocketHubs;
 
 namespace Restaurant.Infrastructure;
 
@@ -18,8 +18,7 @@ public static class InfrastructureDependencyInjection
             .AddDatabase(configuration)
             .AddAuth(configuration)
             .AddOptions(configuration)
-            .AddScoped<ICodeSender, EmailCodeSender>()
-            .AddScoped<ICodeGenerator, CodeGenerator>();
+            .AddScoped<INotificationSender, NotificationSender>();
 
         return services;
     }

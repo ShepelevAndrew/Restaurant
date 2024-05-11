@@ -1,8 +1,8 @@
 ﻿using ErrorOr;
 using MediatR;
-using Restaurant.Application.Abstractions.Auth;
-using Restaurant.Application.Abstractions.Users;
-using Restaurant.Application.Abstractions.VerificationCode;
+using Restaurant.Application.Common.Abstractions.Auth;
+using Restaurant.Application.Common.Abstractions.Users;
+using Restaurant.Application.Common.Abstractions.Auth.VerificationCode;
 using Restaurant.Application.Auth.Common;
 using Restaurant.Domain.Errors;
 using Restaurant.Domain.Users;

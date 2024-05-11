@@ -2,6 +2,7 @@ using Restaurant;
 using Restaurant.Application;
 using Restaurant.Infrastructure;
 using Restaurant.Infrastructure.Migrations;
+using Restaurant.Infrastructure.WebSocketHubs;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services
         .AddPresentation()
         .AddInfrastructure(builder.Configuration)
-        .AddApplication();
+        .AddApplication()
+        .AddSignalR().AddJsonProtocol();
 }
 
 var app = builder.Build();
@@ -27,6 +29,7 @@ var app = builder.Build();
     app.UseSerilogRequestLogging();
     app.UseAuthentication();
     app.UseAuthorization();
+    app.MapHub<OrderHub>("notification");
     app.MapControllers();
 }
 

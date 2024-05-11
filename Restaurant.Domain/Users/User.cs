@@ -1,10 +1,19 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using Restaurant.Domain.Users.Entities;
 
 namespace Restaurant.Domain.Users;
 
 public class User
 {
+    public static User Owner = new("name", "lastname", "owner@gmail.com", "+380698432576", "12345Te");
+
+    static User()
+    {
+        Owner.ConfirmEmail();
+        Owner.ChangeRole(Role.Owner.Id);
+    }
+
     private const string Salt = "0ge3k4k6d90glkj32lk3jljv9";
 
     public User(string firstname, string lastname, string email, string phone, string password)
@@ -16,31 +25,36 @@ public class User
         Phone = phone;
         Password = Sha256Encoding(password, Salt);
         IsEmailConfirmed = false;
+        RoleId = Role.User.Id;
     }
 
     // For EF Core
     private User()
     {
-        Firstname = string.Empty;
-        Lastname = string.Empty;
-        Email = string.Empty;
-        Phone = string.Empty;
-        Password = string.Empty;
     }
 
-    public Guid UserId { get; private set; }
+    public Guid UserId { get; private set; } 
 
-    public string Firstname { get; private set; }
+    public string Firstname { get; private set; } = string.Empty;
 
-    public string Lastname { get; private set; }
+    public string Lastname { get; private set; } = string.Empty;
 
-    public string Email { get; private set; }
+    public string Email { get; private set; } = string.Empty;
 
-    public string Phone { get; private set; }
+    public string Phone { get; private set; } = string.Empty;
 
-    public string Password { get; private set; }
+    public string Password { get; private set; } = string.Empty;
 
     public bool IsEmailConfirmed { get; private set; }
+
+    public int RoleId { get; private set; }
+
+    public User ChangeRole(int roleId)
+    {
+        RoleId = roleId;
+
+        return this;
+    }
 
     public User Update(string? firstname, string? lastname, string? phone)
     {

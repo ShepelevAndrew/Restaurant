@@ -6,4 +6,5 @@ public record UserResponse(
     string Lastname,
     string Email,
     string Phone,
-    string IsEmailConfirmed);
+    int RoleId,
+    bool IsEmailConfirmed);
