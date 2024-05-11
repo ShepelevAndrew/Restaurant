@@ -16,7 +16,6 @@ public static class ApplicationDependencyInjection
 
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-        services.AddScoped<IValidator<RegisterCommand>, RegisterCommandValidator>();
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
         return services;

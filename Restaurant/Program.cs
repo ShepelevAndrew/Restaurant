@@ -29,6 +29,7 @@ var app = builder.Build();
     app.UseSerilogRequestLogging();
     app.UseAuthentication();
     app.UseAuthorization();
+    app.UseExceptionHandler("/error");
     app.MapHub<OrderHub>("notification");
     app.MapControllers();
 }
