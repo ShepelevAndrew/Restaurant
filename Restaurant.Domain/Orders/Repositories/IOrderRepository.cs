@@ -11,9 +11,13 @@ public interface IOrderRepository
 
     Task<Order?> GetOrderFromCart(Guid userId);
 
+    Task<IEnumerable<Order>> GetOrdersByUserId(Guid userId);
+
     Task<IEnumerable<Order>> GetOrdersWithStatus(OrderStatus status);
 
     Task<bool> UpdateOrderStatusInOrder(Order order);
+
+    Task<bool> UpdateOrderInfoInOrder(Order order);
 
     Task<bool> UpdateOrderDetailsInOrder(Order order);
 }

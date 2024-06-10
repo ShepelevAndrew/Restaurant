@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.Orders.DeleteOrderDetailFromCart;
 using Restaurant.Application.Orders.GetOrderDetailsFromCart;
 using Restaurant.Application.Payment.Buy;
+using Restaurant.Controllers.Cart.Request;
 using Restaurant.Controllers.Order.Response;
 using Restaurant.Domain.Users.Enums;
 using Restaurant.Infrastructure.Auth.Authorization.Attributes;
@@ -86,11 +87,11 @@ public class CartController : ApiController
     [Authorize(AuthPolicy.VerifiedAccount)]
     [Produces("application/json")]
     [ProducesResponseType(typeof(OrderResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Buy()
+    public async Task<IActionResult> Buy(BuyRequest request)
     {
         var userId = new Guid(HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
-        var buyCommand = new BuyCommand(userId);
+        var buyCommand = new BuyCommand(userId, request.Location);
         var buyResult = await _mediator.Send(buyCommand);
 
         if (buyResult.IsError)

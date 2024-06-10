@@ -66,6 +66,13 @@ namespace Restaurant.Infrastructure.Migrations
                     b.Property<DateTime?>("ConfirmedDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<DateTime?>("CookedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime?>("PaidDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -352,7 +359,7 @@ namespace Restaurant.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("17cfd1ef-6089-4ffc-9643-6907a90a98ea"),
+                            UserId = new Guid("fdf8459c-8888-4777-8340-9b4dcd83b1ff"),
                             Email = "owner@gmail.com",
                             Firstname = "name",
                             IsEmailConfirmed = true,

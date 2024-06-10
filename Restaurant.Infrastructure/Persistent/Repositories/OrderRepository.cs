@@ -22,7 +22,7 @@ public class OrderRepository : IOrderRepository
     public async Task<bool> Create(Order order)
     {
         FormattableString command =
-            $"INSERT INTO public.\"Orders\" (\"OrderId\", \"Sum\", \"BuyDate\", \"ConfirmedDate\", \"ShippedDate\", \"PaidDate\", \"CancelledDate\", \"Status\", \"UserId\") VALUES ({order.OrderId}, {order.Sum}, {order.BuyDate}, {order.ConfirmedDate}, {order.ShippedDate}, {order.PaidDate}, {order.CancelledDate}, {order.Status}, {order.UserId})";
+            $"INSERT INTO public.\"Orders\" (\"OrderId\", \"Sum\", \"BuyDate\", \"ConfirmedDate\", \"CookedDate\", \"ShippedDate\", \"PaidDate\", \"CancelledDate\", \"Status\", \"UserId\") VALUES ({order.OrderId}, {order.Sum}, {order.BuyDate}, {order.ConfirmedDate}, {order.CookedDate}, {order.ShippedDate}, {order.PaidDate}, {order.CancelledDate}, {order.Status}, {order.UserId})";
         try
         {
             var rawsCount = await _dbContext.Database.ExecuteSqlAsync(command);
@@ -97,10 +97,46 @@ public class OrderRepository : IOrderRepository
         }
     }
 
+    public async Task<IEnumerable<Order>> GetOrdersByUserId(Guid userId)
+    {
+        FormattableString query = $"SELECT * FROM public.\"Orders\" WHERE \"UserId\" = {userId}";
+        try
+        {
+            var orders = await _dbContext.Orders
+                .FromSql(query)
+                .Include(o => o.OrderDetails)
+                .ToListAsync();
+
+            return orders;
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, $"Error with '{query}' sql query in OrderRepository.");
+            throw;
+        }
+    }
+
     public async Task<bool> UpdateOrderStatusInOrder(Order order)
     {
         FormattableString command =
-            $"UPDATE public.\"Orders\" SET \"Status\" = {order.Status}, \"BuyDate\" = {order.BuyDate}, \"ConfirmedDate\" = {order.ConfirmedDate}, \"ShippedDate\" = {order.ShippedDate}, \"PaidDate\" = {order.PaidDate}, \"CancelledDate\" = {order.CancelledDate} WHERE \"OrderId\" = {order.OrderId}";
+            $"UPDATE public.\"Orders\" SET \"Status\" = {order.Status} WHERE \"OrderId\" = {order.OrderId}";
+        try
+        {
+            var rawCount = await _dbContext.Database.ExecuteSqlAsync(command);
+
+            return rawCount > 0;
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, $"Error with '{command}' sql in OrderRepository.");
+            return false;
+        }
+    }
+
+    public async Task<bool> UpdateOrderInfoInOrder(Order order)
+    {
+        FormattableString command =
+            $"UPDATE public.\"Orders\" SET \"Location\" = {order.Location}";
         try
         {
             var rawCount = await _dbContext.Database.ExecuteSqlAsync(command);

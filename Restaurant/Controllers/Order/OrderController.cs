@@ -1,8 +1,11 @@
-﻿using MapsterMapper;
+﻿using System.Security.Claims;
+using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.Orders.Cancelled;
+using Restaurant.Application.Orders.Cooked;
 using Restaurant.Application.Orders.Get;
+using Restaurant.Application.Orders.GetByOne;
 using Restaurant.Application.Orders.Paid;
 using Restaurant.Application.Orders.Shipped;
 using Restaurant.Application.Orders.Verification;
@@ -23,6 +26,26 @@ public class OrderController : ApiController
     {
         _mediator = mediator;
         _mapper = mapper;
+    }
+
+    [HttpGet("my")]
+    [HasPermission(Permissions.Read)]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(IEnumerable<OrderResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetMyOrders()
+    {
+        var userId = new Guid(HttpContext.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value);
+
+        var query = new GetUserOrdersQuery(userId);
+        var getResult = await _mediator.Send(query);
+
+        if (getResult.IsError)
+        {
+            return Problem(getResult.Errors);
+        }
+
+        var response = _mapper.Map<IEnumerable<OrderResponse>>(getResult.Value);
+        return Ok(response);
     }
 
     [HttpGet("bought")]
@@ -50,6 +73,24 @@ public class OrderController : ApiController
     public async Task<IActionResult> GetConfirmOrders()
     {
         var query = new GetOrdersQuery(OrderStatus.Confirmed);
+        var getResult = await _mediator.Send(query);
+
+        if (getResult.IsError)
+        {
+            return Problem(getResult.Errors);
+        }
+
+        var response = _mapper.Map<IEnumerable<OrderResponse>>(getResult.Value);
+        return Ok(response);
+    }
+
+    [HttpGet("cooked")]
+    [HasPermission(Permissions.GetVerifiedOrders)]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(IEnumerable<OrderResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetCookedOrders()
+    {
+        var query = new GetOrdersQuery(OrderStatus.Cooked);
         var getResult = await _mediator.Send(query);
 
         if (getResult.IsError)
@@ -112,6 +153,24 @@ public class OrderController : ApiController
         }
 
         var response = _mapper.Map<OrderResponse>(verificationResult.Value);
+        return Ok(response);
+    }
+
+    [HttpPatch("{orderId}/cooked")]
+    [HasPermission(Permissions.VerifyOrder)]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(OrderResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> CookedOrder(Guid orderId)
+    {
+        var command = new CookedOrderCommand(orderId);
+        var cookedResult = await _mediator.Send(command);
+
+        if (cookedResult.IsError)
+        {
+            return Problem(cookedResult.Errors);
+        }
+
+        var response = _mapper.Map<OrderResponse>(cookedResult.Value);
         return Ok(response);
     }
 

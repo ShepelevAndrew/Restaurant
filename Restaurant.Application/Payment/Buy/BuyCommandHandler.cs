@@ -31,9 +31,11 @@ public class BuyCommandHandler
         }
 
         order.ChangeOrderStatus(OrderStatus.Checkout);
+        order.UpdateOrderInfo(request.Location);
 
         var isSuccess = await _orderRepository.UpdateOrderStatusInOrder(order);
-        if (!isSuccess)
+        var isUpdated = await _orderRepository.UpdateOrderInfoInOrder(order);
+        if (!isSuccess || !isUpdated)
         {
             return Errors.Database.DatabaseFailure;
         }

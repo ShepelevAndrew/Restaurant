@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Restaurant.Application.Common.Abstractions.BlobService;
 using Restaurant.Application.Common.Abstractions.NotificationSenders;
 using Restaurant.Infrastructure.Auth;
+using Restaurant.Infrastructure.BlobServices;
 using Restaurant.Infrastructure.Options;
 using Restaurant.Infrastructure.Persistent;
 using Restaurant.Infrastructure.WebSocketHubs;
@@ -18,7 +20,8 @@ public static class InfrastructureDependencyInjection
             .AddDatabase(configuration)
             .AddAuth(configuration)
             .AddOptions(configuration)
-            .AddScoped<INotificationSender, NotificationSender>();
+            .AddScoped<INotificationSender, NotificationSender>()
+            .AddScoped<IBlobService, ProductBlobService>();
 
         return services;
     }

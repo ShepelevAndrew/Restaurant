@@ -5,6 +5,7 @@ public enum OrderStatus
     Open,
     Checkout,
     Confirmed,
+    Cooked,
     Shipped,
     Paid,
     Cancelled,

@@ -14,12 +14,13 @@ services:
     - "--frontend-port=57100"
     - "--backend-port=57300"
     environment:
+      ASPNETCORE_STATICWEBASSETS: "/app/bin/Debug/net8.0/Restaurant.staticwebassets.runtime.CT.json"
       RIDER_DEBUGGER_LOG_DIR: "/riderLogs"
       RESHARPER_LOG_CONF: "/riderLogsConf/backend-log.xml"
     image: "restaurant:dev"
     ports:
-    - "57024:57100"
-    - "57224:57300"
+    - "57033:57100"
+    - "57233:57300"
     volumes:
     - "C:\\Users\\computer\\AppData\\Roaming\\ASP.NET\\Https:/root/.aspnet/https"
     - "C:\\Users\\computer\\AppData\\Roaming\\Microsoft\\UserSecrets:/root/.microsoft/usersecrets"
@@ -28,5 +29,5 @@ services:
       Linux64:/riderDebugger"
     - "P:\\Programing\\JetBrains Rider 2023.1.1/bin:/riderLogsConf"
     - "C:\\Users\\computer\\AppData\\Local\\JetBrains\\Rider2023.1\\log\\DebuggerWorker\\\
-      JetBrains.Debugger.Worker.2024_5_11_21_27_58:/riderLogs:rw"
+      JetBrains.Debugger.Worker.2024_6_11_00_27_47:/riderLogs:rw"
     working_dir: "/app"

@@ -12,13 +12,21 @@ public class Order
     {
         OrderId = Guid.NewGuid();
         Sum = 0;
+        Location = string.Empty;
         BuyDate = null;
         ConfirmedDate = null;
+        CookedDate = null;
         ShippedDate = null;
         PaidDate = null;
         CancelledDate = null;
         Status = OrderStatus.Open;
         UserId = userId;
+    }
+
+    public Order(Guid userId, string location)
+        : this(userId)
+    {
+        Location = location;
     }
 
     // For EF Core
@@ -30,9 +38,13 @@ public class Order
 
     public decimal Sum { get; private set; }
 
+    public string Location { get; private set; } = string.Empty;
+
     public DateTime? BuyDate { get; private set; }
 
     public DateTime? ConfirmedDate { get; private set; }
+
+    public DateTime? CookedDate { get; private set; }
 
     public DateTime? ShippedDate { get; private set; }
 
@@ -59,6 +71,9 @@ public class Order
                 break;
             case OrderStatus.Confirmed:
                 ConfirmedDate = currentDate;
+                break;
+            case OrderStatus.Cooked:
+                CookedDate = currentDate;
                 break;
             case OrderStatus.Shipped:
                 ShippedDate = currentDate;
@@ -92,5 +107,10 @@ public class Order
         }
 
         Sum += price;
+    }
+
+    public void UpdateOrderInfo(string location)
+    {
+        Location = location;
     }
 }

@@ -3,6 +3,7 @@ using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Restaurant.Application.Common.Abstractions.BlobService;
 using Restaurant.Application.Products.AddRating;
 using Restaurant.Application.Products.AddToCart;
 using Restaurant.Application.Products.Create;
@@ -23,11 +24,13 @@ namespace Restaurant.Controllers.Product;
 [Route("api/v1.0/products")]
 public class ProductController : ApiController
 {
+    private readonly IBlobService _blobService;
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
 
-    public ProductController(IMediator mediator, IMapper mapper)
+    public ProductController(IBlobService blobService, IMediator mediator, IMapper mapper)
     {
+        _blobService = blobService;
         _mediator = mediator;
         _mapper = mapper;
     }
@@ -238,5 +241,42 @@ public class ProductController : ApiController
 
         var response = _mapper.Map<OrderResponse>(addToCartResult.Value);
         return Ok(response);
+    }
+
+    /// <summary>
+    /// Create image for product at restaurant
+    /// </summary>
+    [HttpPost("{alias}/image")]
+    [HasPermission(Permissions.Create)]
+    [Authorize(AuthPolicy.VerifiedAccount)]
+    public IActionResult CreateImage(IFormFile image, string alias)
+    {
+        _blobService.Create(image, alias);
+        return Ok();
+    }
+
+    /// <summary>
+    /// Get image by product alias at restaurant
+    /// </summary>
+    [HttpGet("{alias}/image")]
+    [AllowAnonymous]
+    public IActionResult GetImage(string alias)
+    {
+        var file = _blobService.GetByAlias(alias);
+        if (file is null)
+        {
+            return NotFound();
+        }
+
+        return File(file.Content.Stream, file.ContentType, file.Name);
+    }
+
+    [HttpPut("{alias}/image")]
+    [HasPermission(Permissions.Update)]
+    [Authorize(AuthPolicy.VerifiedAccount)]
+    public IActionResult UpdateImage(IFormFile file, string alias)
+    {
+        _blobService.Update(file, alias);
+        return Ok();
     }
 }
