@@ -26,9 +26,9 @@ var app = builder.Build();
     }
 
     app.UseCors(corsBuilder => corsBuilder
-        .AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader());
+        .WithOrigins("http://localhost:4200", "https://localhost:4200")
+        .AllowAnyHeader()
+        .AllowAnyMethod());
     app.UseHttpsRedirection();
     app.UseStaticFiles();
     app.UseSerilogRequestLogging();
