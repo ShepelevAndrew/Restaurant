@@ -25,6 +25,10 @@ var app = builder.Build();
         app.ApplyMigrations();
     }
 
+    app.UseCors(corsBuilder => corsBuilder
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
     app.UseHttpsRedirection();
     app.UseStaticFiles();
     app.UseSerilogRequestLogging();
