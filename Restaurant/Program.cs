@@ -26,9 +26,12 @@ var app = builder.Build();
     }
 
     app.UseCors(corsBuilder => corsBuilder
-        .WithOrigins("http://localhost:4200", "https://localhost:4200")
+        .AllowAnyOrigin()
         .AllowAnyHeader()
-        .AllowAnyMethod());
+        .AllowAnyMethod()
+        .WithExposedHeaders()
+        .SetIsOriginAllowedToAllowWildcardSubdomains()
+        .DisallowCredentials());
     app.UseHttpsRedirection();
     app.UseStaticFiles();
     app.UseSerilogRequestLogging();
