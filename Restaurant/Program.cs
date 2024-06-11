@@ -46,6 +46,7 @@ var app = builder.Build();
 
 try
 {
+    Console.WriteLine("NEW VERSION");
     app.Run();
 }
 catch(Exception ex)
