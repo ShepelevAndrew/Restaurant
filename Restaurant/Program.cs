@@ -26,7 +26,6 @@ var app = builder.Build();
         app.ApplyMigrations();
     }
 
-    app.UseOptions();
     app.UseCors(corsBuilder => corsBuilder
         .AllowAnyOrigin()
         .AllowAnyHeader()
