@@ -55,6 +55,7 @@ public class Role
 
         Courier.AddPermission(
             Enums.Permissions.Read,
+            Enums.Permissions.GetBoughtOrders,
             Enums.Permissions.GetVerifiedOrders,
             Enums.Permissions.ShippedOrder,
             Enums.Permissions.PaidOrder,

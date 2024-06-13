@@ -3,7 +3,6 @@ using Restaurant.Application;
 using Restaurant.Infrastructure;
 using Restaurant.Infrastructure.Migrations;
 using Restaurant.Infrastructure.WebSocketHubs;
-using Restaurant.Middleware;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);

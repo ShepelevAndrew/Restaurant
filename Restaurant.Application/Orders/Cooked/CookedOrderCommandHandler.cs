@@ -1,7 +1,6 @@
 ﻿using ErrorOr;
 using MediatR;
 using Restaurant.Application.Common.Abstractions.NotificationSenders;
-using Restaurant.Application.Orders.Shipped;
 using Restaurant.Domain.Errors;
 using Restaurant.Domain.Orders;
 using Restaurant.Domain.Orders.Enums;
