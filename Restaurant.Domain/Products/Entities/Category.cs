@@ -29,6 +29,7 @@ public class Category
 
     public Category Update(string name, string description)
     {
+        Alias = AliasConverter.Convert(name, new Transliterator());
         Name = name;
         Description = description;
 

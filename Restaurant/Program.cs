@@ -30,10 +30,7 @@ var app = builder.Build();
     app.UseCors(corsBuilder => corsBuilder
         .AllowAnyOrigin()
         .AllowAnyHeader()
-        .AllowAnyMethod()
-        .WithExposedHeaders()
-        .SetIsOriginAllowedToAllowWildcardSubdomains()
-        .DisallowCredentials());
+        .AllowAnyMethod());
     app.UseHttpsRedirection();
     app.UseStaticFiles();
     app.UseSerilogRequestLogging();
@@ -46,7 +43,6 @@ var app = builder.Build();
 
 try
 {
-    Console.WriteLine("NEW VERSION");
     app.Run();
 }
 catch(Exception ex)

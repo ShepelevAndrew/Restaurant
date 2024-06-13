@@ -40,13 +40,14 @@ public class Product
 
     public Product Update(string name, decimal price, uint weight, string description, Guid categoryId)
     {
+        Alias = AliasConverter.Convert(name, new Transliterator());
         Name = name;
         Price = price;
         Weight = weight;
         Description = description;
         CategoryId = categoryId;
 
-        return this;
+        return new Product(name, price, weight, description, categoryId);
     }
 
     public Product AddRating(int mark)

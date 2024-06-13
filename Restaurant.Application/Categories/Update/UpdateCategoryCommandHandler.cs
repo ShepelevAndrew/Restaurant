@@ -24,8 +24,11 @@ public class UpdateCategoryCommandHandler
             return Errors.Category.CategoryNotFound;
         }
 
+        var oldAlias = category.Alias;
         var updatedCategory = category.Update(request.Name, request.Description);
-        if (await _categoryRepository.IsAliasExist(updatedCategory.Alias))
+
+        var isSameAlias = oldAlias == updatedCategory.Alias;
+        if (await _categoryRepository.IsAliasExist(updatedCategory.Alias) && !isSameAlias)
         {
             return Errors.Category.DuplicateAlias;
         }

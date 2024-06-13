@@ -24,13 +24,16 @@ public class UpdateProductCommandHandler
             return Errors.Product.ProductNotFound;
         }
 
+        var oldAlias = product.Alias;
         var updatedProduct = product.Update(
             request.Name,
             request.Price,
             request.Weight,
             request.Description,
             request.CategoryId);
-        if (await _productRepository.IsAliasExist(updatedProduct.Alias))
+
+        var isSameAlias = oldAlias == updatedProduct.Alias;
+        if (await _productRepository.IsAliasExist(updatedProduct.Alias) && !isSameAlias)
         {
             return Errors.Product.DuplicateAlias;
         }
