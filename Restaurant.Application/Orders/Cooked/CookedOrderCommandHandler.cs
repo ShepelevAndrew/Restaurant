@@ -10,7 +10,7 @@ using Restaurant.Domain.Orders.Repositories;
 namespace Restaurant.Application.Orders.Cooked;
 
 public class CookedOrderCommandHandler
-    : IRequestHandler<ShippedOrderCommand, ErrorOr<Order>>
+    : IRequestHandler<CookedOrderCommand, ErrorOr<Order>>
 {
     private readonly IOrderRepository _orderRepository;
     private readonly INotificationSender _notificationSender;
@@ -23,7 +23,7 @@ public class CookedOrderCommandHandler
         _notificationSender = notificationSender;
     }
 
-    public async Task<ErrorOr<Order>> Handle(ShippedOrderCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<Order>> Handle(CookedOrderCommand request, CancellationToken cancellationToken)
     {
         var order = await _orderRepository.GetOrder(request.OrderId);
         if (order is null)

@@ -67,6 +67,24 @@ public class OrderController : ApiController
         return Ok(response);
     }
 
+    [HttpGet("shipped")]
+    [HasPermission(Permissions.GetBoughtOrders)]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(IEnumerable<OrderResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetShippedOrders()
+    {
+        var query = new GetOrdersQuery(OrderStatus.Shipped);
+        var getResult = await _mediator.Send(query);
+
+        if (getResult.IsError)
+        {
+            return Problem(getResult.Errors);
+        }
+
+        var response = _mapper.Map<IEnumerable<OrderResponse>>(getResult.Value);
+        return Ok(response);
+    }
+
     [HttpGet("confirm")]
     [HasPermission(Permissions.GetVerifiedOrders)]
     [Produces("application/json")]
