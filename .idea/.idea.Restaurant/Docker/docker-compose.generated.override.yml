@@ -29,5 +29,5 @@ services:
       Linux64:/riderDebugger"
     - "P:\\Programing\\JetBrains Rider 2023.1.1/bin:/riderLogsConf"
     - "C:\\Users\\computer\\AppData\\Local\\JetBrains\\Rider2023.1\\log\\DebuggerWorker\\\
-      JetBrains.Debugger.Worker.2024_6_13_09_30_41:/riderLogs:rw"
+      JetBrains.Debugger.Worker.2024_6_13_10_00_18:/riderLogs:rw"
     working_dir: "/app"

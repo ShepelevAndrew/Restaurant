@@ -9,6 +9,7 @@ using Restaurant.Application.Orders.GetByOne;
 using Restaurant.Application.Orders.Paid;
 using Restaurant.Application.Orders.Shipped;
 using Restaurant.Application.Orders.Verification;
+using Restaurant.Controllers.Order.Request;
 using Restaurant.Controllers.Order.Response;
 using Restaurant.Domain.Orders.Enums;
 using Restaurant.Domain.Users.Enums;
@@ -214,9 +215,9 @@ public class OrderController : ApiController
     [HasPermission(Permissions.CancelledOrder)]
     [Produces("application/json")]
     [ProducesResponseType(typeof(OrderResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> CancelledOrder(Guid orderId, [FromBody]string description)
+    public async Task<IActionResult> CancelledOrder(Guid orderId, CancelledOrderRequest request)
     {
-        var command = new CancelledOrderCommand(orderId, description);
+        var command = new CancelledOrderCommand(orderId, request.Description);
         var cancelledResult = await _mediator.Send(command);
 
         if (cancelledResult.IsError)
