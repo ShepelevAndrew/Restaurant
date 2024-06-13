@@ -47,6 +47,7 @@ public class Role
         Operator.AddPermission(
             Enums.Permissions.Read,
             Enums.Permissions.GetBoughtOrders,
+            Enums.Permissions.GetVerifiedOrders,
             Enums.Permissions.VerifyOrder,
             Enums.Permissions.CancelledOrder,
             Enums.Permissions.ReadUsers,
