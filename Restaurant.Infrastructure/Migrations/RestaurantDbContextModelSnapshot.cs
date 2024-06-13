@@ -359,7 +359,7 @@ namespace Restaurant.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("fdf8459c-8888-4777-8340-9b4dcd83b1ff"),
+                            UserId = new Guid("b7d74805-6d9f-40ff-8ac2-5c7ab7f40db0"),
                             Email = "owner@gmail.com",
                             Firstname = "name",
                             IsEmailConfirmed = true,
@@ -519,6 +519,11 @@ namespace Restaurant.Infrastructure.Migrations
                         {
                             RoleId = 4,
                             PermissionId = 5
+                        },
+                        new
+                        {
+                            RoleId = 4,
+                            PermissionId = 7
                         },
                         new
                         {
